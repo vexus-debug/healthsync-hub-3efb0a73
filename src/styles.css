@@ -61,6 +61,11 @@
 @keyframes scale-in { 0% { opacity: 0; transform: scale(0.94); } 100% { opacity: 1; transform: scale(1); } }
 
 :root {
+  --tube-edta: 280 60% 50%;
+  --tube-citrate: 205 80% 55%;
+  --tube-fluoride: 0 0% 55%;
+  --tube-plain: 45 95% 50%;
+  --tube-sterile: 0 0% 85%;
     --background: 150 20% 99%;
     --foreground: 200 30% 10%;
     --card: 0 0% 100%;

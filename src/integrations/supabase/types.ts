@@ -578,11 +578,14 @@ export type Database = {
       test_forms: {
         Row: {
           age: number
+          analysis_started_at: string | null
           approval_status: string
           approved_at: string | null
           approved_by: string | null
           bill: string | null
           clinical_notes: string | null
+          collected_at: string | null
+          collected_by: string | null
           completed_at: string | null
           created_at: string | null
           created_by: string | null
@@ -597,6 +600,9 @@ export type Database = {
           nature_of_specimen: string | null
           patient_name: string
           phone: string | null
+          received_at: string | null
+          received_by: string | null
+          recollection_count: number
           referred_by: string | null
           rejected_at: string | null
           rejected_by: string | null
@@ -604,6 +610,10 @@ export type Database = {
           results: Json | null
           scientist_id: string | null
           serial: string
+          specimen_rejected_at: string | null
+          specimen_rejection_code: string | null
+          specimen_rejection_notes: string | null
+          specimen_status: string
           status: string | null
           submitted_at: string | null
           submitted_by: string | null
@@ -612,11 +622,14 @@ export type Database = {
         }
         Insert: {
           age?: number
+          analysis_started_at?: string | null
           approval_status?: string
           approved_at?: string | null
           approved_by?: string | null
           bill?: string | null
           clinical_notes?: string | null
+          collected_at?: string | null
+          collected_by?: string | null
           completed_at?: string | null
           created_at?: string | null
           created_by?: string | null
@@ -631,6 +644,9 @@ export type Database = {
           nature_of_specimen?: string | null
           patient_name: string
           phone?: string | null
+          received_at?: string | null
+          received_by?: string | null
+          recollection_count?: number
           referred_by?: string | null
           rejected_at?: string | null
           rejected_by?: string | null
@@ -638,6 +654,10 @@ export type Database = {
           results?: Json | null
           scientist_id?: string | null
           serial: string
+          specimen_rejected_at?: string | null
+          specimen_rejection_code?: string | null
+          specimen_rejection_notes?: string | null
+          specimen_status?: string
           status?: string | null
           submitted_at?: string | null
           submitted_by?: string | null
@@ -646,11 +666,14 @@ export type Database = {
         }
         Update: {
           age?: number
+          analysis_started_at?: string | null
           approval_status?: string
           approved_at?: string | null
           approved_by?: string | null
           bill?: string | null
           clinical_notes?: string | null
+          collected_at?: string | null
+          collected_by?: string | null
           completed_at?: string | null
           created_at?: string | null
           created_by?: string | null
@@ -665,6 +688,9 @@ export type Database = {
           nature_of_specimen?: string | null
           patient_name?: string
           phone?: string | null
+          received_at?: string | null
+          received_by?: string | null
+          recollection_count?: number
           referred_by?: string | null
           rejected_at?: string | null
           rejected_by?: string | null
@@ -672,6 +698,10 @@ export type Database = {
           results?: Json | null
           scientist_id?: string | null
           serial?: string
+          specimen_rejected_at?: string | null
+          specimen_rejection_code?: string | null
+          specimen_rejection_notes?: string | null
+          specimen_status?: string
           status?: string | null
           submitted_at?: string | null
           submitted_by?: string | null

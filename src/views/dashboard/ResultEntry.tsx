@@ -25,6 +25,7 @@ import { fetchTestForm, updateTestFormResults, DbTestForm } from "@/lib/supabase
 import { toast } from "sonner";
 import { fetchLabTests, LabTest, testValueKey } from "@/lib/labTests";
 import { templateFor, fieldKey, TemplateField } from "@/lib/testTemplates";
+import { SpecimenPanel } from "@/components/specimen/SpecimenPanel";
 import { approveResult, deleteTestForm, reopenApprovedResult } from "@/lib/resultAdmin";
 
 const ResultEntry = () => {
@@ -239,6 +240,8 @@ const ResultEntry = () => {
           <Printer className="h-4 w-4" /> Print Report
         </Button>
       </div>
+
+      <SpecimenPanel form={form as never} staffName={profile?.display_name ?? user?.email ?? "Staff"} userId={user?.id} />
 
       {/* Test Form Info */}
       <Card className="mb-5 border-border/60 shadow-soft bg-primary-soft/40">
