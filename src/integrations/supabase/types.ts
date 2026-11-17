@@ -714,6 +714,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      _token_matches: {
+        Args: {
+          _age: number
+          _phone: string
+          _ref_year: number
+          _token: string
+        }
+        Returns: boolean
+      }
       get_public_result: {
         Args: { _serial: string }
         Returns: {
@@ -758,6 +767,47 @@ export type Database = {
           serial: string
           status: string
           urgent: boolean
+        }[]
+      }
+      get_verified_result: {
+        Args: { _serial: string; _token: string }
+        Returns: {
+          age: number
+          completed_at: string
+          date_collected: string
+          examination_required: string
+          gender: string
+          nature_of_specimen: string
+          patient_name: string
+          referred_by: string
+          results: Json
+          scientist_name: string
+          serial: string
+          status: string
+          tests_requested: string[]
+        }[]
+      }
+      get_verified_scan: {
+        Args: { _serial: string; _token: string }
+        Returns: {
+          age: number
+          approved_at: string
+          body_part: string
+          clinical_indication: string
+          findings: string
+          gender: string
+          impression: string
+          modality: string
+          mrn: string
+          patient_name: string
+          recommendation: string
+          referring_doctor: string
+          report_text: string
+          reported_at: string
+          scan_date: string
+          scan_type: string
+          serial: string
+          status: string
         }[]
       }
       has_lab_permission: {

@@ -14,6 +14,7 @@ import type { DynamicRow } from "@/components/dashboard/ReportPreview";
 import { fetchLabTests, type LabTest } from "@/lib/labTests";
 import { templateFor, fieldKey } from "@/lib/testTemplates";
 import { TestForm } from "@/lib/labCatalog";
+import { ScanReportView, type PublicScan } from "@/components/verify/ScanReportView";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -55,6 +56,12 @@ const getReportElement = (root: HTMLElement) => root.querySelector<HTMLElement>(
 
 const Results = () => {
   const [serial, setSerial] = useState("");
+  useEffect(() => {
+    const s = new URLSearchParams(window.location.search).get("serial");
+    if (s) setSerial(s);
+  }, []);
+  const [token, setToken] = useState("");
+  const [scan, setScan] = useState<PublicScan | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PublicResult | null>(null);
   const [downloading, setDownloading] = useState(false);
@@ -83,14 +90,24 @@ const Results = () => {
     if (!ref) return;
     setLoading(true);
     setResult(null);
+    setScan(null);
     try {
-      const { data, error } = await (supabase as any).rpc("get_public_result", { _serial: ref });
+      const isScan = ref.startsWith("SC");
+      const { data, error } = await (supabase as any).rpc(isScan ? "get_verified_scan" : "get_verified_result", {
+        _serial: ref,
+        _token: token.trim(),
+      });
       if (error) throw error;
       const row = Array.isArray(data) ? data[0] : data;
+      if (row && isScan) {
+        setScan(row as PublicScan);
+        setTimeout(() => reportRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+        return;
+      }
       if (!row) {
         toast({
-          title: "No completed result found",
-          description: "Check your reference ID. Results are only available once your test is marked Completed.",
+          title: "No matching report found",
+          description: "Check the serial and your year of birth / last 4 phone digits. Only completed reports are released.",
           variant: "destructive",
         });
         return;
@@ -343,7 +360,21 @@ const Results = () => {
                 required
                 autoComplete="off"
               />
-              <p className="text-xs text-muted-foreground">This is the lab number printed on your slip.</p>
+              <p className="text-xs text-muted-foreground">Lab results start with GM-, scan reports with SC-.</p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="token">Year of birth or last 4 digits of phone</Label>
+              <Input
+                id="token"
+                inputMode="numeric"
+                placeholder="e.g. 1990 or 4521"
+                value={token}
+                onChange={(e) => setToken(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                required
+                minLength={4}
+                autoComplete="off"
+              />
+              <p className="text-xs text-muted-foreground">This protects your privacy so only you can open your report.</p>
             </div>
             <Button type="submit" variant="hero" size="lg" className="w-full" disabled={loading}>
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
@@ -379,6 +410,18 @@ const Results = () => {
           </aside>
         </div>
       </section>
+
+      {scan && (
+        <section className="pb-16">
+          <div className="container space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 no-print">
+              <h2 className="font-display font-bold text-2xl">Scan report {scan.serial}</h2>
+              <Button variant="outline" onClick={handlePrint}><Printer className="h-4 w-4" /> Print / Save PDF</Button>
+            </div>
+            <div ref={reportRef} className="print-area"><ScanReportView scan={scan} /></div>
+          </div>
+        </section>
+      )}
 
       {reportForm && (
         <section className="pb-16">

@@ -1,3 +1,4 @@
+import { VerifyQR } from "@/components/verify/VerifyQR";
 import { LAB_SECTIONS } from "@/lib/labCatalog";
 import { sectionHasValues } from "@/lib/labValidation";
 import { TestForm } from "@/lib/labCatalog";
@@ -132,6 +133,9 @@ export const ReportPreview = ({ form, values, scientistName, dynamicRows = [] }:
           <span>Medical Laboratory Scientist: <span className="font-medium text-slate-900">{formatScientistName(scientistName)}</span></span>
           <span>Generated: {new Date().toLocaleString()}</span>
         </div>
+        {form.status === "Completed" && form.serial && (
+          <div className="flex justify-end mb-2"><VerifyQR serial={form.serial} /></div>
+        )}
         <div className="border-t border-slate-200 pt-2 flex flex-wrap justify-between gap-x-4 gap-y-1 text-[9px] text-slate-500">
           <span>{SITE.address}</span>
           <span>{SITE.phones.join(" • ")} • {SITE.email}</span>
